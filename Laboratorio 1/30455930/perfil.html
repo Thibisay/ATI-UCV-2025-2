@@ -4,109 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thibisay Palma</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <style>
-        /* Estilos generales */
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        /* Contenedor principal */
-        .perfil-card {
-            border-top-left-radius: 30px;
-            display: flex;
-            background-color: white;
-            width: 1000px;
-            gap: 5px;
-        }
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
 
-        /* Contenedor de la foto */
-        .foto-container {
-            flex-shrink: 0;
-            width: 250px;
-            overflow: hidden;
-            
-        }
-        
-        .foto {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            border-top-left-radius: 30px;
-        }
-
-        /* Contenedor del contenido (será el único con borde negro) */
-        .content-container {
-            font-size: 20px;
-            border: 1px solid black; 
-            padding: 20px 15px;
-            flex-grow: 1;
-            box-shadow: 
-                5px 5px 0px rgb(116, 105, 105);
-        }
-
-        .nombre {
-            font-family: Arial, sans-serif;
-            font-size: 50px;
-            color: orange;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        
-        p {
-            font-family: Arial, sans-serif;
-            color: #000000;
-            line-height: 1.2;
-            margin-bottom: 10px;
-        }
-        
-        /* Contenedor de preguntas y respuestas */
-        .details-container {
-            color: #000000;
-            display: flex;
-            margin-top: 15px;
-        }
-
-        .preguntas-container {
-            width: 300px;
-            flex-shrink: 0;
-        }
-        
-        .respuestas-container {
-            flex-grow: 1;
-        }
-        
-        .correo-container a {
-            color: orange;
-            text-decoration: none;
-        }
-
-        .correo-container {
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        
-        .correo-container a:hover {
-            
-            text-decoration: underline;
-        }
-        
-        .correo-container a:active {
-            color: red;
-        }
-    </style>
-</head>
-<body>
-    <div class="perfil-card">
+<body class="perfil-body"> <div class="perfil-card">
         <div class="foto-container">
-            <img src="30455930.jpg" alt="Foto de perfil" class="foto">
+            <img src="30455930.jpg" alt="Foto de perfil" class="foto-perfil">
         </div>
         <div class="content-container">
             <div class="nombre">
@@ -133,7 +36,7 @@
                     Azul <br>
                     Cien años de soledad <br>
                     Pop <br>
-                    Call of Duty  <br>
+                    Call of Duty  <br>
                     <b>Python, Java, C++,</b> <br>
                 </div>
             </div>
