@@ -19,9 +19,11 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+
+
 }
 
-/* Estilos del Encabezado de index */
+/* --- Estilos del Encabezado de index ---- */
 
 header {
     padding: 10px;
@@ -252,4 +254,228 @@ footer {
 
 .correo-container a:active {
     color: red;
+}
+
+
+/* Para cuando la pantalla está entre 320px y 480px */
+
+@media screen and (min-width: 320px) and (max-width: 480px){
+    
+/*Estilos para perfil */
+    .perfil-card {
+        width: 95%;
+    }
+
+    .foto-container {
+        width: 30%;
+    }
+    .foto-perfil {
+        width: 100%; 
+        height: 100%;;
+    }
+
+    .content-container {
+        font-size: 10px;
+        padding: 5px;
+        box-shadow: 2px 2px 0px rgb(116, 105, 105); 
+    }
+
+    .nombre {
+        font-size: 20px;
+    }
+    
+    .details-container > div {
+        line-height: 1.5;
+    }
+
+    .details-container,
+    .correo-container {
+        font-size: 9px;
+    }
+
+    .preguntas-container {
+        width: 130px ;
+    }
+
+/* Estilos para index*/
+    .nombre-pagina {
+        font-size: 0.7em; 
+    }
+    .usuario {
+        font-size: 0.7em;
+    }
+    .ucv-small {
+        font-size: 0.5em;
+    }
+
+    .search-form {
+        gap: 3px;
+    }
+
+    .search-form input {
+        padding: 2px;
+        font-size: 0.5em;
+        width: 50px
+    }
+
+    .search-form button {
+        padding: 3px 1px;
+        font-size: 0.5em;
+        width: 30px;
+    }
+
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr); 
+        max-width: 97%;
+        padding: 5px;
+        gap: 5px;
+    }
+
+    .person-card p{
+        font-size: 0.7em;
+    }
+
+    footer {
+        padding: 20px;
+        font-size: 0.7em;
+    }
+
+}
+
+/*Ajuste adicional para que se vea mejor colocando 2 usuarios por fila
+para cuando la resolución de pantalla es más amplia */
+@media screen and (min-width: 400px) and (max-width: 480px){
+
+    .nombre-pagina {
+        font-size: 0.9em; 
+    }
+    .ucv-small {
+        font-size: 0.7em;
+    }
+
+    .usuario {
+        font-size: 0.8em; 
+    }
+
+    .search-form input {
+        width: 70px
+    }
+
+    .gallery {
+        max-width: 90%;
+        padding: 5px;
+        gap: 10px;
+    }
+
+    .person-card p{
+        font-size: 0.9em;
+    }
+}
+
+/*Para cuando la pantalla está entre 481px y 768px */
+
+@media screen and (min-width: 481px) and (max-width: 768px){
+    
+
+    .perfil-card {
+        width: 90%;
+    }
+
+    .foto-container {
+        width: 30%;
+    }
+
+    .foto-perfil {
+        width: 100%; 
+        height: 100%; 
+    }
+
+    .content-container {
+        font-size: 14px;
+        padding: 15px;
+        box-shadow: 3px 3px 0px rgb(116, 105, 105);
+    }
+
+    .nombre {
+        font-size: 30px;
+        margin-bottom: 5px;
+    }
+    
+    .details-container > div {
+        line-height: 1.5;
+    }
+
+    .details-container,
+    .correo-container {
+        font-size: 10px;
+    }
+
+    .preguntas-container {
+        width: 180px ;
+    }
+
+    /*--- Estilos para index ---*/
+
+    .person-card p{
+        font-size: 12px;
+    }
+
+    .gallery {
+        max-width: 95%; 
+        padding: 10px;
+        gap: 10px; 
+    }
+
+
+    .nombre-pagina {
+        font-size: 1em; 
+    }
+    .usuario {
+        font-size: 0.9em;
+    }
+    .ucv-small {
+        font-size: 0.7em;
+    }
+
+    .search-form {
+        gap: 3px;
+    }
+
+    .search-form input {
+        padding: 2px;
+        font-size: 0.7em;
+        width: 80px
+    }
+
+    .search-form button {
+        padding: 3px 5px;
+        font-size: 0.7em;
+    }
+}
+
+/*Para cuando la pantalla está entre 769px y 1024px*/
+
+@media screen and (min-width: 769px) and (max-width: 1024px){
+    
+
+    .perfil-card {
+        width: 90%; 
+        
+    }
+    .content-container {
+        font-size: 18px; 
+        padding: 15px;
+        box-shadow: 3px 3px 0px rgb(116, 105, 105); 
+        border-top: none; 
+    }
+
+    .preguntas-container {
+        width: 250px ;
+    }
+
+    .details-container,
+    .correo-container {
+        font-size: 14px;
+    }
 }

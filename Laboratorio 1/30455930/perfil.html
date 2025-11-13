@@ -7,9 +7,20 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/style.css">
 
-<body class="perfil-body"> <div class="perfil-card">
+<body class="perfil-body"> 
+    <div class="perfil-card">
         <div class="foto-container">
-            <img src="30455930.jpg" alt="Foto de perfil" class="foto-perfil">
+            <picture>
+                <source media="(min-width:1025px) and (max-width:1200px)" srcset="30455930Grande.jpg">
+
+                <source media="(min-width:769px) and (max-width:1024px)" srcset="30455930Grande.jpg">
+
+                <source media="(min-width:481px) and (max-width:768px)" srcset="30455930Pequeña.jpg">
+
+                <source media="(min-width:320px) and (max-width:480px)" srcset="30455930Pequeña.jpg">
+
+                <img src="30455930Grande.jpg" alt="Imagen por defecto 30455930Grande" class="foto-perfil">
+            </picture>
         </div>
         <div class="content-container">
             <div class="nombre">
@@ -34,10 +45,10 @@
 
                 <div class="respuestas-container">
                     Azul <br>
-                    Cien años de soledad <br>
+                    Aura<br>
                     Pop <br>
-                    Call of Duty  <br>
-                    <b>Python, Java, C++,</b> <br>
+                    Call of Duty<br>
+                    <b>Python, Java, C++</b> <br>
                 </div>
             </div>
 

@@ -33,12 +33,22 @@
     <section>
         <ul class="gallery">
             <li class="person-card">
-                <img src="30455930/30455930.jpg" alt="Thibisay Palma" class="foto">
+                <picture>
+                    <source media="(min-width:1025px) and (max-width:1200px)" srcset="30455930/30455930Grande.jpg">
+
+                    <source media="(min-width:769px) and (max-width:1024px)" srcset="30455930/30455930Grande.jpg">
+
+                    <source media="(min-width:481px) and (max-width:768px)" srcset="30455930/30455930Pequeña.jpg">
+                    
+                    <source media="(min-width:320px) and (max-width:480px)" srcset="30455930/30455930Pequeña.jpg">
+
+                    <img src="30455930/30455930Grande.jpg" alt="Thibisay Palma" class="foto">
+                </picture>
                 <p>Thibisay Palma</p>
             </li>
             <li class="person-card">
-                <img src="dummy1/dummy.jpg" alt="Juan Antonio Perez" class="foto">
-                <p>Juan Antonio Perez</p>
+                <img src="dummy1/dummy.jpg" alt="Maria Peña" class="foto">
+                <p>Maria Peña</p>
             </li>
             <li class="person-card">
                 <img src="dummy2/dummy.jpg" alt="Maritza Rodriguez" class="foto">
