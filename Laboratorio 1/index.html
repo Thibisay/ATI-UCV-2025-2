@@ -5,24 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATI[UCV] 2025-2</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css"> </head>
+    <link rel="stylesheet" href="css/style.css"> 
+
+    <script type="text/javascript" src="conf/configEN.json" defer></script>
+    <script type="text/javascript" src="js/index.js" defer></script>
+
+</head>
 <body>
     <header>
         <nav>
             <ul>
                 <div class="nombre-pagina">
-                    <li>ATI<span class="ucv-small">[ucv]</span> 2025-2</li>
+                    <li id="sitio-title">ATI<span class="ucv-small">[ucv]</span> 2025-2</li>
                 </div>
                 
                 <div class="usuario">
-                    <li>Hola, Thibisay </li>
+                    <li id="user-greeting">Hola, Thibisay</li>
                 </div>
                 
                 <div class="search-container">
                     <li>
                         <form class="search-form">
-                            <input type="text" placeholder="Nombre..." aria-label="Campo de búsqueda">
-                            <button type="submit">Buscar</button>
+                            <input id="search-input" type="text" placeholder="Nombre..." aria-label="Campo de búsqueda">
+                            <button id="search-btn" type="submit">Buscar</button>
                         </form>
                     </li>
                 </div>
@@ -33,48 +38,13 @@
     <section>
         <ul class="gallery">
             <li class="person-card">
-                <picture>
-                    <source media="(min-width:1025px) and (max-width:1200px)" srcset="30455930/30455930Grande.jpg">
-
-                    <source media="(min-width:769px) and (max-width:1024px)" srcset="30455930/30455930Grande.jpg">
-
-                    <source media="(min-width:481px) and (max-width:768px)" srcset="30455930/30455930Pequeña.jpg">
-                    
-                    <source media="(min-width:320px) and (max-width:480px)" srcset="30455930/30455930Pequeña.jpg">
-
-                    <img src="30455930/30455930Grande.jpg" alt="Thibisay Palma" class="foto">
-                </picture>
-                <p>Thibisay Palma</p>
-            </li>
-            <li class="person-card">
-                <img src="dummy1/dummy.jpg" alt="Maria Peña" class="foto">
-                <p>Maria Peña</p>
-            </li>
-            <li class="person-card">
-                <img src="dummy2/dummy.jpg" alt="Maritza Rodriguez" class="foto">
-                <p>Maritza Rodriguez</p>
-            </li>
-            <li class="person-card">
-                <img src="dummy3/dummy.jpg" alt="Emilia Casado" class="foto">
-                <p>Emilia Casado</p>
-            </li>
-            <li class="person-card">
-                <img src="dummy4/dummy.jpg" alt="Maria Elena Pinto" class="foto">
-                <p>Maria Elena Pinto</p>
-            </li>
-            <li class="person-card">
-                <img src="dummy5/dummy.jpg" alt="Ronald Gutierrez" class="foto">
-                <p>Ronald Gutierrez</p>
-            </li>
-            <li class="person-card">
-                <img src="dummy6/dummy.jpg" alt="Juan Antonio Perez" class="foto">
-                <p>Juan Antonio Perez</p>
+                
             </li>
         </ul>
     </section>
 
     <footer>
-        <p>Copyright &copy; 2025 Escuela de computación - ATI. Todos los derechos reservados </p>
+        <p id="footer-text">Copyright &copy; 2025 Escuela de computación - ATI. Todos los derechos reservados </p>
     </footer>
 </body>
 </html>
