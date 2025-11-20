@@ -43,22 +43,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Funciones para Cargar Estudiantes 
 
     
+    /**
+     * Genera el HTML para una tarjeta de estudiante.
+     * Ahora envuelve la tarjeta en un enlace a perfil.html?ci=...
+     * @param {Object} estudiante - Objeto con los datos del estudiante (ci, imagen, nombre).
+     * @returns {string} - Cadena HTML de la tarjeta envuelta en un <a>.
+     */
     function crearTarjetaEstudiante(estudiante) {
         const nombreCompleto = estudiante.nombre;
-        // Reemplazamos las barras invertidas (\/) por barras normales (/) si existen
-        const rutaImagen = estudiante.imagen.replace(/\\/g, '/');
+        const rutaImagenBase = estudiante.imagen.replace(/\\/g, '/'); 
+        const cedula = estudiante.ci; // Obtenemos la C.I.
+        
+        // La ruta de destino (href) incluye el parámetro 'ci'
+        const perfilURL = `perfil.html?ci=${cedula}`; 
 
+        // Creamos la estructura de la tarjeta (li) dentro de la etiqueta <a>
         return `
-            <li class="person-card">
-                <picture>
-                    <source media="(min-width:1025px) and (max-width:1200px)" srcset="${rutaImagen}">
-                    <source media="(min-width:769px) and (max-width:1024px)" srcset="${rutaImagen}">
-                    <source media="(min-width:481px) and (max-width:768px)" srcset="${rutaImagen}">
-                    <source media="(min-width:320px) and (max-width:480px)" srcset="${rutaImagen}">
-                    <img src="${rutaImagen}" alt="${nombreCompleto}" class="foto">
-                </picture>
-                <p>${nombreCompleto}</p>
-            </li>
+            <a href="${perfilURL}">
+                <li class="person-card">
+                    <picture>
+                        <source media="(min-width:1025px) and (max-width:1200px)" srcset="${rutaImagenBase}">
+                        <source media="(min-width:769px) and (max-width:1024px)" srcset="${rutaImagenBase}">
+                        <source media="(min-width:481px) and (max-width:768px)" srcset="${rutaImagenBase}">
+                        <source media="(min-width:320px) and (max-width:480px)" srcset="${rutaImagenBase}">
+                        <img src="${rutaImagenBase}" alt="${nombreCompleto}" class="foto">
+                    </picture>
+                    <p>${nombreCompleto}</p>
+                </li>
+            </a>
         `;
     }
 
