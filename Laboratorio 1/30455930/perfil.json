@@ -1,0 +1,14 @@
+const perfil = {	
+	"nombre":"Thibisay Palma",
+	"descripcion":"Soy estudiante de la licenciatura de Computación de la UCV. Actualmente estoy cursando el sexto semestre de la carrera. Me gusta mucho el área de desarrollo web y la inteligencia artificial.",
+	"color": "Azul",
+	"libro": ["Aura."],
+	"musica": ["Pop."],
+	"video_juego": ["Call of Duty"],
+	"lenguajes": ["JPython, Java, C++"],
+	"email":"thibisaypalma1812@gmail.com",
+	"ci":"30455930",
+	"genero":"femenino",
+	"fecha_nacimiento":"18/12/2003",
+    "imagen":"30455930Grande.jpg"
+}
