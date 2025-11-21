@@ -1,8 +1,87 @@
-// 1. Obtener la Cédula (CI) del parámetro de la URL
+// Variable global para almacenar los datos del perfil una vez cargados.
+let perfilData = null; 
+
+// --- Funciones de Utilidad y Configuración de Idioma ---
+
+function getLanguageFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const lang = urlParams.get('lang');
+    
+    const validLangs = ['EN', 'ES', 'PT'];
+    const defaultLang = 'ES';
+
+    if (lang && validLangs.includes(lang.toUpperCase())) {
+        return lang.toUpperCase();
+    }
+    return defaultLang;
+}
+
+// Aplica los textos traducidos al HTML del perfil. 
+function applyTranslation() {
+    if (typeof config === 'undefined' || !perfilData) {
+        console.warn('Advertencia: Configuración o datos del perfil no disponibles para traducción.');
+        return;
+    }
+    
+    // 1. Contenedor de Preguntas: Traduce los textos estáticos.
+    const preguntasContainer = document.querySelector('.preguntas-container');
+    if (preguntasContainer) {
+        preguntasContainer.innerHTML = `
+            ${config.color}: <br>
+            ${config.libro}: <br>
+            ${config.musica}: <br>
+            ${config.video_juego}: <br>
+            <b>${config.lenguajes}: </b><br>
+        `;
+    }
+
+    // 2. Correo Electrónico: Traduce el texto introductorio del correo usando la clave 'email'.
+    const correoContainer = document.querySelector('.correo-container');
+
+    const emailLink = `<a href="mailto:${perfilData.email}">${perfilData.email}</a>`;
+
+    const emailText = config.email.replace('[email]', emailLink);
+    
+    if (correoContainer) {
+        correoContainer.innerHTML = emailText; 
+    }
+}
+
+
+/* Carga dinámicamente el archivo de configuración de idioma y ejecuta la traducción */
+function loadConfigAndRender() {
+    const langCode = getLanguageFromUrl(); 
+    const configPath = `conf/config${langCode}.json`; 
+
+    console.log(`Cargando archivo de configuración para perfil: ${configPath}`);
+    
+    const scriptConfig = document.createElement('script');
+    scriptConfig.src = configPath;
+    scriptConfig.type = 'text/javascript';
+
+    scriptConfig.onload = function() {
+        if (typeof config !== 'undefined') {
+            console.log('Configuración de idioma cargada exitosamente.');
+            // Aplicamos la traducción inmediatamente
+            applyTranslation();
+        } else {
+            console.error(`Error: La variable "config" no se ha encontrado después de cargar ${configPath}.`);
+        }
+    };
+
+    scriptConfig.onerror = function() {
+        console.error(`Error al cargar el archivo de configuración: ${configPath}.`);
+    };
+
+    document.head.appendChild(scriptConfig);
+}
+
+/* Logica para cargar la información en el perfil */
+
+// 1. Obtener la Cédula (CI)
 const urlParams = new URLSearchParams(window.location.search);
 const ci = urlParams.get('ci');
 
-// Si no hay CI, detenemos la ejecución y mostramos un error
 if (!ci) {
     document.body.innerHTML = '<h1>Error: No se ha especificado la Cédula de Identidad del perfil.</h1>';
     document.title = 'Perfil no encontrado';
@@ -13,34 +92,31 @@ if (!ci) {
 const perfilJsonPath = `${ci}/perfil.json`;
 
 // 3. Crear y adjuntar el script para cargar el perfil
-const script = document.createElement('script');
-script.src = perfilJsonPath;
-script.type = 'text/javascript';
+const scriptPerfil = document.createElement('script');
+scriptPerfil.src = perfilJsonPath;
+scriptPerfil.type = 'text/javascript';
 
-// 4. Esperar a que el script se cargue y la variable 'perfil' esté disponible
-script.onload = function() {
-    // La variable 'perfil' ahora está definida globalmente por el archivo perfil.json
+scriptPerfil.onload = function() {
     if (typeof perfil !== 'undefined' && perfil.ci === ci) {
-        renderizarPerfil(perfil);
+        perfilData = perfil; 
+        renderizarPerfil(perfilData); 
+        
+        // Carga el idioma después de renderizar el perfil
+        loadConfigAndRender(); 
     } else {
-        mostrarErrorCarga(`No se pudo cargar el perfil para la CI: ${ci}. Asegúrate de que el archivo ${perfilJsonPath} exista y defina la variable 'perfil'.`);
+        mostrarErrorCarga(`No se pudo cargar el perfil para la CI: ${ci}.`);
     }
 };
 
-script.onerror = function() {
-    mostrarErrorCarga(`Error al intentar cargar el archivo: ${perfilJsonPath}. Verifica la ruta y que el archivo exista.`);
+scriptPerfil.onerror = function() {
+    mostrarErrorCarga(`Error al intentar cargar el archivo: ${perfilJsonPath}.`);
 };
 
-// 5. Añadir el script al head para que se ejecute y cargue la variable 'perfil'
-document.head.appendChild(script);
+// 4. Añadir el script del perfil al head
+document.head.appendChild(scriptPerfil);
 
 
-// --- Funciones de Soporte ---
 
-/**
- * Muestra un mensaje de error en la página.
- * @param {string} mensaje - El mensaje de error a mostrar.
- */
 function mostrarErrorCarga(mensaje) {
     console.error('Error de Carga:', mensaje);
     document.body.innerHTML = `<h1>Error de Carga</h1><p>${mensaje}</p>`;
@@ -48,18 +124,14 @@ function mostrarErrorCarga(mensaje) {
 }
 
 
-/**
- * Rellena el HTML con los datos del perfil cargado.
- * @param {Object} data - El objeto 'perfil' cargado del archivo JS.
- */
+/* Rellena el HTML con los datos del perfil cargado. */
 function renderizarPerfil(data) {
     // 1. Actualizar el Título de la Página
     document.title = data.nombre;
 
-    // 2. Contenedor de la Foto
+    // 2. Foto
     const fotoContainer = document.querySelector('.foto-container picture');
-    const imagenPath = `${data.ci}/${data.imagen}`; // ¡Ruta Corregida para la imagen!
-    
+    const imagenPath = `${data.ci}/${data.imagen}`; 
     if (fotoContainer) {
         fotoContainer.innerHTML = `<img src="${imagenPath}" alt="${data.nombre}" class="foto-perfil">`;
     }
@@ -71,7 +143,6 @@ function renderizarPerfil(data) {
     }
     
     // 4. Descripción
-    // Usamos querySelector para buscar el texto dentro de <i>
     const descripcionElement = document.querySelector('.content-container > p > b > i');
     if (descripcionElement) {
         descripcionElement.textContent = data.descripcion;
@@ -80,7 +151,6 @@ function renderizarPerfil(data) {
     // 5. Detalles (Respuestas)
     const respuestasContainer = document.querySelector('.respuestas-container');
     if (respuestasContainer) {
-        // Generamos el HTML de las respuestas, asegurando manejar arrays
         const lenguajes = Array.isArray(data.lenguajes) ? data.lenguajes.join(', ') : data.lenguajes;
         const musica = Array.isArray(data.musica) ? data.musica.join(', ') : data.musica;
         const libro = Array.isArray(data.libro) ? data.libro.join(', ') : data.libro;
@@ -99,6 +169,7 @@ function renderizarPerfil(data) {
     // 6. Correo Electrónico
     const correoContainer = document.querySelector('.correo-container');
     if (correoContainer) {
-        correoContainer.innerHTML = `Si necesitas comunicarte conmigo me puedes escribir a: <a href="mailto:${data.email}">${data.email}</a>`;
+        // Mantiene un texto temporal o el por defecto, applyTranslation lo modificará con el texto traducido.
+        correoContainer.innerHTML = `Si necesitas comunicarte conmigo me puedes escribir a: <a href="mailto:${data.email}">${data.email}</a>`; 
     }
 }

@@ -2,12 +2,71 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let listaPerfiles = [];
 
-    // --- Parte de traducción segun la configuración 
-    
-    // Verificamos que la variable global 'config' esté definida
-    if (typeof config !== 'undefined') {
+    // Función que lee el parámetro 'lang' de la URL y devuelve el código de idioma
+    function getLanguageFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang');
         
-        // Titulo de la pagina según el idioma cargado
+        // Mapeamos el código de la URL a un sufijo de archivo válido
+        // Por defecto, usamos 'ES' (español) si no se especifica o no es válido.
+        const validLangs = ['EN', 'ES', 'PT'];
+        const defaultLang = 'ES';
+
+        if (lang && validLangs.includes(lang.toUpperCase())) {
+            return lang.toUpperCase();
+        }
+        return defaultLang;
+    }
+
+    // Función auxiliar para usar textos predeterminados si falla la carga de config
+    function applyDefaultText() {
+        console.warn('Usando textos predeterminados.');
+    }
+
+    // Función para cargar dinámicamente el archivo de configuración
+    function loadConfigAndRender() {
+        const langCode = getLanguageFromUrl(); 
+        const configPath = `conf/config${langCode}.json`;
+
+        // Punto de depuración: Ver qué archivo intenta cargar
+        console.log(`Cargando archivo de configuración: ${configPath}`);
+        
+        const script = document.createElement('script');
+        script.src = configPath;
+        script.type = 'text/javascript';
+
+        script.onload = function() {
+            // La variable 'config' ahora está disponible globalmente
+            if (typeof config !== 'undefined') {
+                console.log('Configuración de idioma cargada exitosamente.');
+                // 1. Ejecutamos la lógica de traducción
+                applyTranslation();
+                // 2. Ejecutamos la lógica de carga de perfiles (después de la traducción)
+                loadProfilesAndRender();
+            } else {
+                console.error(`Error de Carga: La variable "config" no se ha encontrado después de cargar ${configPath}.`);
+                // Si falla la carga de config, al menos intentamos cargar los perfiles
+                loadProfilesAndRender();
+            }
+        };
+
+        script.onerror = function() {
+            console.error(`Error de Carga: Error al intentar cargar el archivo de configuración: ${configPath}.`);
+            applyDefaultText();
+            // Si falla la carga de config, al menos intentamos cargar los perfiles
+            loadProfilesAndRender();
+        };
+
+        document.head.appendChild(script);
+    }
+    
+    // Función para aplicar los textos de la configuración
+    function applyTranslation() {
+        if (typeof config === 'undefined') {
+            console.error('Error: "config" no está definida para la traducción.');
+            return;
+        }
+        
         const sitioTitle = document.getElementById('sitio-title');
         if (sitioTitle) {
             sitioTitle.innerHTML = `${config.sitio[0]}<span class="ucv-small">${config.sitio[1]}</span> ${config.sitio[2]}`;
@@ -16,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const userGreeting = document.getElementById('user-greeting');
         if (userGreeting) {
             const currentText = userGreeting.textContent.trim();
-            // Intenta obtener el nombre después de la coma, si no lo encuentra usa 'Thibisay'
             const userName = currentText.includes(',') ? currentText.split(',')[1].trim() : 'Thibisay';
             userGreeting.textContent = `${config.saludo}, ${userName}`;
         }
@@ -35,37 +93,34 @@ document.addEventListener('DOMContentLoaded', function() {
         if (footerText) {
             footerText.innerHTML = config.copyRight; 
         }
-
-    } else {
-        console.error('Error de Carga: La variable "config" no se ha encontrado. Asegúrate de que el archivo de configuración exista y esté bien formado.');
     }
 
-    // --- Funciones para Cargar Estudiantes 
-
+    function loadProfilesAndRender() {
+        // El código de renderizado de estudiantes se ejecuta aquí.
+        if (typeof perfiles !== 'undefined' && Array.isArray(perfiles)) {
+            listaPerfiles = perfiles;
+            renderizarEstudiantes(listaPerfiles);
+        } else {
+            console.error('Error de Carga: La variable "perfiles" no se ha encontrado. Asegúrate de cargar datos/index.json en index.html antes de index.js.');
+        }
+    }
     
-    /**
-     * Genera el HTML para una tarjeta de estudiante.
-     * Ahora envuelve la tarjeta en un enlace a perfil.html?ci=...
-     * @param {Object} estudiante - Objeto con los datos del estudiante (ci, imagen, nombre).
-     * @returns {string} - Cadena HTML de la tarjeta envuelta en un <a>.
-     */
+
+    // --- Funciones para Cargar Estudiantes ---
+    
     function crearTarjetaEstudiante(estudiante) {
         const nombreCompleto = estudiante.nombre;
         const rutaImagenBase = estudiante.imagen.replace(/\\/g, '/'); 
-        const cedula = estudiante.ci; // Obtenemos la C.I.
-        
-        // La ruta de destino (href) incluye el parámetro 'ci'
-        const perfilURL = `perfil.html?ci=${cedula}`; 
+        const cedula = estudiante.ci; 
 
-        // Creamos la estructura de la tarjeta (li) dentro de la etiqueta <a>
+        const langCode = getLanguageFromUrl(); 
+        
+        const perfilURL = `perfil.html?ci=${cedula}&lang=${langCode}`; 
+
         return `
             <a href="${perfilURL}">
                 <li class="person-card">
                     <picture>
-                        <source media="(min-width:1025px) and (max-width:1200px)" srcset="${rutaImagenBase}">
-                        <source media="(min-width:769px) and (max-width:1024px)" srcset="${rutaImagenBase}">
-                        <source media="(min-width:481px) and (max-width:768px)" srcset="${rutaImagenBase}">
-                        <source media="(min-width:320px) and (max-width:480px)" srcset="${rutaImagenBase}">
                         <img src="${rutaImagenBase}" alt="${nombreCompleto}" class="foto">
                     </picture>
                     <p>${nombreCompleto}</p>
@@ -82,7 +137,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Limpiamos la galería de contenido existente
         galeria.innerHTML = ''; 
 
         let htmlTarjetas = '';
@@ -94,13 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // Verificación y Carga de Perfiles
-    if (typeof perfiles !== 'undefined' && Array.isArray(perfiles)) {
-        // Si la variable global 'perfiles' existe, la usamos para renderizar
-        listaPerfiles = perfiles;
-        renderizarEstudiantes(listaPerfiles);
-    } else {
-        console.error('Error de Carga: La variable "perfiles" no se ha encontrado. Asegúrate de cargar datos/index.json en index.html antes de index.js.');
-    }
+    loadConfigAndRender();
 
 });
