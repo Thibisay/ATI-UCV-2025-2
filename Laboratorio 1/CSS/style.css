@@ -173,6 +173,29 @@ footer {
     color: #ffffff;
 }
 
+
+
+/* --- Estilos del mensaje de Alumnos no encontrados --- */
+
+
+.mensaje-no-resultados {
+    grid-column: 1 / -1; 
+    
+    text-align: center;
+    color: #8bbce3;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 50px 0;
+    width: 100%;
+}
+
+/* Ajuste para móviles para mantener el texto centrado y visible */
+@media screen and (max-width: 480px){
+    .mensaje-no-resultados {
+        font-size: 1.1em;
+    }
+}
+
 /* ---- Estilos de Perfil ---------*/
 
 .perfil-card {
@@ -479,3 +502,6 @@ para cuando la resolución de pantalla es más amplia */
         font-size: 14px;
     }
 }
+
+
+

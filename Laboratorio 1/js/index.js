@@ -148,6 +148,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    // --- LÓGICA DE BÚSQUEDA ---
+
+    const searchInput = document.getElementById('search-input');
+    const searchForm = document.querySelector('.search-form');
+
+    function filtrarEstudiantes() {
+        const textoBusqueda = searchInput.value.toLowerCase().trim();
+
+        // Verificamos si el nombre incluye el texto escrito
+        const estudiantesFiltrados = listaPerfiles.filter(estudiante => 
+            estudiante.nombre.toLowerCase().includes(textoBusqueda)
+        );
+
+        if (estudiantesFiltrados.length > 0) {
+            // Si hay coincidencias, renderizamos las tarjetas
+            renderizarEstudiantes(estudiantesFiltrados);
+        } else {
+            // Si no hay coincidencias, mostramos el mensaje especial
+            mostrarMensajeNoEncontrado(searchInput.value);
+        }
+    }
+
+    function mostrarMensajeNoEncontrado(query) {
+        const galeria = document.querySelector('.gallery');
+        if (!galeria) return;
+
+        let mensajeTexto = "No hay alumnos que tengan en su nombre"; 
+        
+        if (typeof config !== 'undefined' && config.noAlumnos) {
+            mensajeTexto = config.noAlumnos;
+        }
+        galeria.innerHTML = `
+            <div class="mensaje-no-resultados">
+                ${mensajeTexto} ${query}
+            </div>
+        `;
+    }
+
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            filtrarEstudiantes();
+        });
+    }
+
     loadConfigAndRender();
 
 });
