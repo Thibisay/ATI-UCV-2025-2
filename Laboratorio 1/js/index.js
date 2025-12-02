@@ -4,17 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función que lee el parámetro 'lang' de la URL y devuelve el código de idioma
     function getLanguageFromUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const lang = urlParams.get('lang');
+        const currentUrl = new URL(window.location.href);
+        const lang = currentUrl.searchParams.get('lang');
         
         // Mapeamos el código de la URL a un sufijo de archivo válido
         // Por defecto, usamos 'ES' (español) si no se especifica o no es válido.
         const validLangs = ['EN', 'ES', 'PT'];
         const defaultLang = 'ES';
 
-        if (lang && validLangs.includes(lang.toUpperCase())) {
+        // Si no hay parámetro 'lang', redirigimos agregándolo a la URL
+        if (!lang) {
+            currentUrl.searchParams.set('lang', defaultLang);
+            window.location.href = currentUrl.toString();
+            return defaultLang; 
+        } 
+        // Si existe, verificamos si es válido
+        if (validLangs.includes(lang.toUpperCase())) {
             return lang.toUpperCase();
         }
+        // Si no es válido, retornamos el idioma por defecto
         return defaultLang;
     }
 
@@ -67,6 +75,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        if (config.sitio && config.sitio.length >= 3) {
+            document.title = `${config.sitio[0]} ${config.sitio[1]} ${config.sitio[2]}`;
+        }
+
         const sitioTitle = document.getElementById('sitio-title');
         if (sitioTitle) {
             sitioTitle.innerHTML = `${config.sitio[0]}<span class="ucv-small">${config.sitio[1]}</span> ${config.sitio[2]}`;

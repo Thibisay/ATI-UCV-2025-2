@@ -79,43 +79,50 @@ function loadConfigAndRender() {
 /* Logica para cargar la información en el perfil */
 
 // 1. Obtener la Cédula (CI)
-const urlParams = new URLSearchParams(window.location.search);
-const ci = urlParams.get('ci');
+window.onload = function() {
 
-if (!ci) {
-    document.body.innerHTML = '<h1>Error: No se ha especificado la Cédula de Identidad del perfil.</h1>';
-    document.title = 'Perfil no encontrado';
-    throw new Error('CI no especificada en la URL.'); 
-}
+    const urlParams = new URLSearchParams(this.location.search);
+    const ci = urlParams.get('ci');
 
-// 2. Construir la ruta al archivo perfil.json
-const perfilJsonPath = `${ci}/perfil.json`;
-
-// 3. Crear y adjuntar el script para cargar el perfil
-const scriptPerfil = document.createElement('script');
-scriptPerfil.src = perfilJsonPath;
-scriptPerfil.type = 'text/javascript';
-
-scriptPerfil.onload = function() {
-    if (typeof perfil !== 'undefined' && perfil.ci === ci) {
-        perfilData = perfil; 
-        renderizarPerfil(perfilData); 
-        
-        // Carga el idioma después de renderizar el perfil
-        loadConfigAndRender(); 
-    } else {
-        mostrarErrorCarga(`No se pudo cargar el perfil para la CI: ${ci}.`);
+    if (!ci) {
+        document.body.innerHTML = '<h1>Error: No se ha especificado la Cédula de Identidad del perfil.</h1>';
+        document.title = 'Perfil no encontrado';
+        throw new Error('CI no especificada en la URL.'); 
     }
+
+    cargarPerfil(ci);
 };
 
-scriptPerfil.onerror = function() {
-    mostrarErrorCarga(`Error al intentar cargar el archivo: ${perfilJsonPath}.`);
-};
+function cargarPerfil(ci) {
+    // 2. Construir la ruta al archivo perfil.json
+    const perfilJsonPath = `${ci}/perfil.json`;
 
-// 4. Añadir el script del perfil al head
-document.head.appendChild(scriptPerfil);
+    // 3. Crear y adjuntar el script para cargar el perfil
+    const scriptPerfil = document.createElement('script');
+    scriptPerfil.src = perfilJsonPath;
+    scriptPerfil.type = 'text/javascript';
 
+    scriptPerfil.onload = function() {
+        if (typeof perfil !== 'undefined' && perfil.ci === ci) {
+            perfilData = perfil; 
+            renderizarPerfil(perfilData); 
+            
+            // Carga el idioma después de renderizar el perfil
+            loadConfigAndRender(); 
+        } else {
+            mostrarErrorCarga(`No se pudo cargar el perfil para la CI: ${ci}.`);
+        }
+    };
 
+    scriptPerfil.onerror = function() {
+        console.error("Fallo al cargar el script:", this);
+        mostrarErrorCarga(`Error al intentar cargar el archivo: ${this.src}`);
+    };
+
+    // 4. Añadir el script del perfil al head
+    document.head.appendChild(scriptPerfil);
+
+}
 
 function mostrarErrorCarga(mensaje) {
     console.error('Error de Carga:', mensaje);
@@ -133,7 +140,22 @@ function renderizarPerfil(data) {
     const fotoContainer = document.querySelector('.foto-container picture');
     const imagenPath = `${data.ci}/${data.imagen}`; 
     if (fotoContainer) {
-        fotoContainer.innerHTML = `<img src="${imagenPath}" alt="${data.nombre}" class="foto-perfil">`;
+        // Limpiamos el contenedor
+        fotoContainer.innerHTML = '';
+
+        // Creamos la imagen manualmente
+        const img = document.createElement('img');
+        img.src = `${data.ci}/${data.imagen}`;
+        img.alt = data.nombre;
+        img.className = 'foto-perfil';
+
+        img.onerror = function() {
+            console.log("Picture Failed");
+            console.log("Fallo al cargar imagen (src):", this.src); // 'this' es la etiqueta <img>
+        };
+
+        fotoContainer.appendChild(img);
+
     }
 
     // 3. Nombre
