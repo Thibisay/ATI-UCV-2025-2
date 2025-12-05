@@ -188,10 +188,4 @@ function renderizarPerfil(data) {
         respuestasContainer.innerHTML = respuestasHTML;
     }
     
-    // 6. Correo Electrónico
-    const correoContainer = document.querySelector('.correo-container');
-    if (correoContainer) {
-        // Mantiene un texto temporal o el por defecto, applyTranslation lo modificará con el texto traducido.
-        correoContainer.innerHTML = `Si necesitas comunicarte conmigo me puedes escribir a: <a href="mailto:${data.email}" class="email-link">${data.email}</a>`; 
-    }
 }
