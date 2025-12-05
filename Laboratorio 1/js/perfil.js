@@ -38,7 +38,7 @@ function applyTranslation() {
     // 2. Correo Electrónico: Traduce el texto introductorio del correo usando la clave 'email'.
     const correoContainer = document.querySelector('.correo-container');
 
-    const emailLink = `<a href="mailto:${perfilData.email}">${perfilData.email}</a>`;
+    const emailLink = `<a href="mailto:${perfilData.email}" class="email-link">${perfilData.email}</a>`;
 
     const emailText = config.email.replace('[email]', emailLink);
     
@@ -192,6 +192,6 @@ function renderizarPerfil(data) {
     const correoContainer = document.querySelector('.correo-container');
     if (correoContainer) {
         // Mantiene un texto temporal o el por defecto, applyTranslation lo modificará con el texto traducido.
-        correoContainer.innerHTML = `Si necesitas comunicarte conmigo me puedes escribir a: <a href="mailto:${data.email}">${data.email}</a>`; 
+        correoContainer.innerHTML = `Si necesitas comunicarte conmigo me puedes escribir a: <a href="mailto:${data.email}" class="email-link">${data.email}</a>`; 
     }
 }

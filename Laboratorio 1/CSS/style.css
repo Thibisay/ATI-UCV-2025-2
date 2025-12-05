@@ -237,7 +237,7 @@ footer {
     margin-bottom: 10px;
 }
 
-.content-container p {
+.content-text {
     font-family: Arial, sans-serif;
     color: #000000;
     line-height: 1.2;
@@ -266,16 +266,16 @@ footer {
 }
 
 
-.correo-container a {
+.email-link {
     color: orange;
     text-decoration: none;
 }
 
-.correo-container a:hover {
+.email-link:hover {
     text-decoration: underline;
 }
 
-.correo-container a:active {
+.email-link:active {
     color: red;
 }
 
